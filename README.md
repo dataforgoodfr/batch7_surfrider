@@ -41,6 +41,27 @@ docker exec -it  podb_postgis psql -U postgres -h 0.0.0.0 -d plastic_origin   -f
 
 ```
 
+## Run with docker-compose 
+
+```
+mkdir scripts/
+```
+
+Download dump and dev-trashroulette.sql file in DFG slack channel  https://data-for-good.slack.com/archives/CUPEEFGHK/p1584022472112300
+
+Store this files in scripts folder. Then only run :
+
+```bash
+docker-compose up -d 
+```
+
+This will start postgres+postgis, Elasticsearch + Kibana and SQLServer with and adminer server to access data. Postgis data will be uploaded at startup
+
+You need to upload surfrider data dump manually with this command 
+```bash
+docker exec -it surfrider_sql_server /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SurfRiderFoundation2019! -i /scripts/surfrider_dev-trashroulette.sql
+```
+
 ## Query & visualization :
 
 Database connection:

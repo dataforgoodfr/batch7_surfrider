@@ -1,0 +1,41 @@
+version: "3.7"
+services:
+  postgres:
+    image: kartoza/postgis:9.6-2.4
+    container_name: surfrider_podb_postgis
+    env_file: .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./volumes/postgres/data:/var/lib/postgresql"
+      - "./scripts:/docker-entrypoint-initdb.d/"
+    restart: always
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
+    container_name: surfrider_elasticsearch
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.4.0
+    container_name: surfrider_kibana
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "5601:5601"
+  adminer:
+    container_name: surfrider_adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  sqlserver:
+    container_name: surfrider_sql_server
+    image: microsoft/mssql-server-linux:2017-latest
+    env_file: .env
+    ports:
+      - "1433:1433"
+    volumes:
+      - "./scripts:/scripts/"
